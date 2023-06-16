@@ -42,3 +42,7 @@ Route::put('/user', [HomeController::class, 'updateUser'])->name('update.user')-
 Route::get('/done', function () {
     return view('done');
 })->name('done')->middleware('auth');
+
+Route::get('/ukuran', function () {
+    return view('ukuran');
+});
