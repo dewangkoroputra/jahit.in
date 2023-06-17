@@ -18,36 +18,37 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
 
         $category = $request->category;
         $location = $request->location;
         $search = $request->search;
 
-        if ($category && $location && $search){
+        if ($category && $location && $search) {
             $products = Product::where('category', $category)
                 ->where('location', $location)
                 ->where('name', 'like', "%$search %")
                 ->paginate(10);
-        } elseif ($category && $location){
+        } elseif ($category && $location) {
             $products = Product::where('category', $category)
                 ->where('location', $location)
                 ->paginate(10);
-        } elseif ($category && $search){
+        } elseif ($category && $search) {
             $products = Product::where('category', $category)
                 ->where('name', 'like', "%$search %")
                 ->paginate(10);
-        } elseif ($location && $search){
+        } elseif ($location && $search) {
             $products = Product::where('location', $location)
                 ->where('name', 'like', "%$search %")
                 ->paginate(10);
-        } elseif ($category){
+        } elseif ($category) {
             $products = Product::where('category', $category)
                 ->paginate(10);
-        } elseif ($location){
+        } elseif ($location) {
             $products = Product::where('location', $location)
                 ->paginate(10);
-        } elseif ($search){
+        } elseif ($search) {
             $products = Product::where('name', 'like', "%$search %")
                 ->paginate(10);
         } else {
@@ -56,12 +57,14 @@ class HomeController extends Controller
         return view('home', compact('products'));
     }
 
-    public function show($id){
+    public function show($id)
+    {
         $product = Product::find($id);
         return view('detail', compact('product'));
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
 
         $data = $request->validate([
             'product_id' => 'required',
@@ -69,17 +72,38 @@ class HomeController extends Controller
 
         $data['status'] = 'WAITING';
         $data['user_id'] = auth()->user()->id;
-        
+
         $preOrder = PreOrder::create($data);
 
-        return redirect()->route('home')->with('status', 'Berhasil');
+        return redirect()->route('ukuran')->with('status', 'Berhasil');
     }
 
-    public function payment(Request $request, $id){
+    public function complatePreOrder(Request $request)
+    {
+        $request->validate([
+            'length' => 'required',
+            'width' => 'required',
+            'height' => 'required',
+        ]);
+
+        $pre_order = PreOrder::find(auth()->user()->id);
+
+        $pre_order->height = $request->height;
+        $pre_order->width = $request->width;
+        $pre_order->length = $request->length;
+
+        $pre_order->save();
+
+        return redirect()->route('cart')->with('status', 'Berhasil');
+    }
+
+    public function payment(Request $request, $id)
+    {
         return view('payment', compact('id'));
     }
 
-    public function paymentStore(Request $request, $id){
+    public function paymentStore(Request $request, $id)
+    {
         $data = $request->validate([
             'bank' => 'required',
         ]);
@@ -90,19 +114,21 @@ class HomeController extends Controller
 
         $preOrder = PreOrder::find($order->pre_order_id);
         $preOrder->status = 'SUCCESS';
-        
+
         $preOrder->save();
         $order->save();
         return redirect()->route('done')->with('status', 'Berhasil');
     }
 
-    public function user(Request $request){
+    public function user(Request $request)
+    {
         $user = User::find(auth()->user()->id);
 
         return view('user', compact('user'));
     }
 
-    public function updateUser(Request $request){
+    public function updateUser(Request $request)
+    {
         $user = User::find(auth()->user()->id);
 
         try {

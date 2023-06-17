@@ -16,6 +16,9 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('user_id');
             $table->enum('status', ['WAITING', 'PROCESS', 'REJECT', 'SUCCESS']);
+            $table->integer('length')->nullable()->default(0);
+            $table->integer('width')->nullable()->default(0);
+            $table->integer('height')->nullable()->default(0);
             $table->timestamps();
         });
 

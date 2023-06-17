@@ -47,7 +47,5 @@ class CartController extends Controller
         $product->save();
 
         return redirect()->route('payment', $order->id);
-
-
     }
 }

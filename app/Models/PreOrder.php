@@ -11,6 +11,9 @@ class PreOrder extends Model
     protected $table = 'pre_order';
     protected $fillable = [
         'product_id',
+        'length',
+        'width',
+        'height',
         'user_id',
         'status',
     ];

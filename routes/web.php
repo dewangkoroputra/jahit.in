@@ -45,4 +45,6 @@ Route::get('/done', function () {
 
 Route::get('/ukuran', function () {
     return view('ukuran');
-});
+})->middleware('auth')->name('ukuran');
+
+Route::post('ukuran', [HomeController::class, 'complatePreOrder'])->name('complete_detail_pre_order_store')->middleware('auth');
