@@ -31,7 +31,7 @@
         </div>
         <div class="flex">
           <label for="address">Address :</label>
-          <input id="address" type="text" class='bg-transparent pl-2' value="Jl. Soekarno Hatta No. 7B">
+          <input id="address" type="text" class='bg-transparent pl-2' value="Sisfor ITS">
         </div>
       </div>
       <div class="mt-1 w-fit mx-auto rounded-lg">
